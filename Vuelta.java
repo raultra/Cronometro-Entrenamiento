@@ -32,6 +32,7 @@ public class Vuelta {
     
     public short getDistancia()
     {
+        distancia=0;
         for(byte i=0;i<=(p-1);i++)
             distancia+=distanciaxPista[i];
         
@@ -41,6 +42,7 @@ public class Vuelta {
     
     public int getTiempoRecorrido()
     {
+        tiempoRecorrido=0;
         for(byte i=0;i<=(p-1);i++)
             tiempoRecorrido+=tiempoxPista[i];
         
@@ -58,7 +60,7 @@ public class Vuelta {
         
     }
       
-    public void setTiempoxPista(byte pista,int tiempo)
+    public void setTiempoxPista(int pista,int tiempo)
     {
         tiempoxPista[pista]=tiempo;
     }
@@ -75,94 +77,25 @@ public class Vuelta {
         return false;
     }
     
-    public int getTiempoxPista(byte pista)
+    public int getTiempoxPista(int pista)
     {
         return tiempoxPista[pista];
     }
     
+    public void setTiemposPistas(float tp1,float tp2,float tp3,float tp4)
+    {
+        int c=1;
+        
+        tiempoxPista[0]=(int)tp1*c;
+        tiempoxPista[1]=(int)tp2*c;
+        tiempoxPista[2]=(int)tp3*c;
+        tiempoxPista[3]=(int)tp4*c;    
+    }
     
 }
 
 
-class Caminata
-{
-    private Vuelta vueltas[];           // Contabiliza los datos de cada vuelta dada al campo
-    private byte numeroVueltas;          // Total vueltas dadas
-    private short distanciaCaminata;
-    private int tiempoCaminata;
-    private short ppm;                    // pulso promedio
-    private Date fechaCaminata;           // usada para identificar la caminata en la semana
-    
-    private byte vueltasContador;
-    private byte vueltaActual;
-    
-    
-    Caminata(byte numeroVueltas)
-    {
-        
-        this.numeroVueltas=numeroVueltas;
-        vueltas= new Vuelta[this.numeroVueltas];        
-        //distanciaCaminata= (short)(this.numeroVueltas*Vuelta.getDistancia());
-        vueltasContador=0;
-        vueltaActual=0;
-        
-        this.setNuevaVuelta();
-    }
-    
-    public void setPPM(short pulsoPromedio)
-    {
-        ppm=pulsoPromedio;
-    }
-    
-    public short getPPM()
-    {
-        return ppm;
-    }
-      
-    public short getDistancia()
-    {
-        return distanciaCaminata;
-    }
-    
-    public int getTiempoCaminata()
-    {
-        tiempoCaminata=0;
-        for(int i=0;i<this.numeroVueltas;i++)
-            tiempoCaminata+=vueltas[i].getTiempoRecorrido();
-        return tiempoCaminata;
-    }
-    
-    public byte getVueltaActual()
-    {
-        return (byte)(vueltaActual);
-    }
-    
-    public byte setNuevaVuelta()
-    {
-        if(vueltasContador<this.numeroVueltas)
-        {
-            vueltas[vueltasContador]=new Vuelta();
-            vueltaActual=vueltasContador;
-            return vueltasContador++;
-        }
-           
-        return -1;
-    }
-          
-  
-    public void guardarTiempoxPista(int tiempo)
-    {
-        boolean t;
-        
-        t=vueltas[vueltaActual].setTiempoxPista(tiempo);
-        if(!t)
-        {
-            this.setNuevaVuelta();
-            vueltas[vueltaActual].setTiempoxPista(tiempo);
-        }
-    }
-      
-}
+
 
 
 class Semana

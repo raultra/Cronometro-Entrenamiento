@@ -16,6 +16,8 @@ public class MIDletCronometro extends MIDlet {
                      formulario= new PantallaPrincipal(this);
 
      }
+     
+     
 
      public void startApp(){
                     pantalla.setCurrent(formulario);
