@@ -89,6 +89,7 @@ public class PantallaPrincipal extends Form implements CommandListener {
          cronometro=new Cronometro(tiempoContado,tiempoVueltaAnterior);
          vueltaGoal= new Vuelta();
          vueltaGoal.setTiemposPistas(5579, 2853, 5579, 2662);   
+         //vueltaGoal.setTiemposPistas(1000, 1500, 1000, 1200);
          
          MostrarObjetivos();
          this.setCommandListener(this);
@@ -100,7 +101,7 @@ public class PantallaPrincipal extends Form implements CommandListener {
          resetPistas();  
          totalVueltas.setText(""+ caminata.getVueltaActual());
          escribirPista(vueltaGoal.getTiempoxPista(contadorPistas));
-         
+         cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas));
          cronometro.Iniciar();
          this.removeCommand(cmdIniciar);
          this.removeCommand(cmdSalir);
@@ -136,7 +137,8 @@ public class PantallaPrincipal extends Form implements CommandListener {
         Display.getDisplay(app).vibrate(200);
         
         tiempoActual=(int)cronometro.getTiempoCron();
-        cronometro.resetLapso();
+        //cronometro.resetLapso();
+      
         
         temp=tiempoActual-tiempoAnterior;
         
@@ -162,18 +164,20 @@ public class PantallaPrincipal extends Form implements CommandListener {
         int c,t,dif;
         
         c=getcontadorPistas();
-        t=vueltaGoal.getTiempoxPista((byte) c)+ tiempoAgregado;
+        t=vueltaGoal.getTiempoxPista((byte) c);
         
         dif=t-temp;
         
-        mostrarPistas(temp,dif);        
+        tiempoAgregado+=dif;
+        
+        mostrarPistas(temp,tiempoAgregado);     
+        
         caminata.guardarTiempoxPista(temp);
         totalVueltas.setText(Integer.toString(caminata.getVueltaActual()));
         
-        if(dif>0) dif= 0;
-        
-        escribirPista(vueltaGoal.getTiempoxPista(contadorPistas)+dif);
-        tiempoAgregado=dif;     
+        cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas));                 
+        escribirPista(vueltaGoal.getTiempoxPista(contadorPistas));
+             
                  
     }
     

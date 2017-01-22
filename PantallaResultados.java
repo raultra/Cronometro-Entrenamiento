@@ -1,13 +1,14 @@
 
 package cronometro;
 
+import java.util.Date;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
-
+import javax.microedition.lcdui.DateField;
 /**
  *
  * @author raul
@@ -24,22 +25,29 @@ public class PantallaResultados  extends Form implements CommandListener{
     private StringItem tiempoMeta;
     private StringItem puntosSesion;
     private StringItem fecha;
-    
+    private Date today;
+    private DateField datefield;
     
     PantallaResultados(MIDlet a)
     {
          super("Estadísticas");
          app= a;
-         fecha= new StringItem("Sesión: ",Cronometro.getFecha());
+         //fecha= new StringItem("Sesión: ",Cronometro.getFecha());
          tiempoTotal = new StringItem("Tiempo total: ", "00:00:00:00");
          tiempoMeta = new StringItem( "Tiempo Meta : ", "00:00:00:00");
+         datefield = new DateField("", DateField.DATE_TIME);
+         today = new Date(System.currentTimeMillis());
  
          //totalVueltas = new StringItem("Vuelta:", "00");
          
          
                  
          cmdSalir=new Command("Salir",Command.EXIT,0);
-         this.append(fecha);
+         
+         datefield.setDate(today);
+         
+         this.append(datefield);
+         //this.append(fecha);
          this.addCommand(cmdSalir);
          this.append(tiempoTotal);
          this.append(tiempoMeta);

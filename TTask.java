@@ -16,7 +16,7 @@ import java.util.TimerTask;
 final class TTask  extends TimerTask
 {
       private final Cronometro a;
-
+      private final int cen=13;
             
       TTask(Cronometro paramCronometro)
       {
@@ -26,9 +26,9 @@ final class TTask  extends TimerTask
 
       
      public void run(){
-         
-                     a.incContador(1); //incremento  centésimas el tiempo
-                     a.incLapso(1);
+                     
+                     a.incContador(cen); //incremento  centésimas el tiempo
+                     a.incLapso(cen);
                      a.printContador();
                      a.printLapso();
                      
