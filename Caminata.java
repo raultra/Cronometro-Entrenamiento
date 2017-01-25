@@ -19,16 +19,16 @@ public class Caminata
     
     private int tiempoCaminata;
     private short ppm;                    // pulso promedio
-    private String fechaCaminata;           // usada para identificar la caminata en la semana
+    //private String fechaCaminata;           // usada para identificar la caminata en la semana
     
     private byte vueltasContador;
     private byte vueltaActual;
-    
+    private Date fechaCaminata;
     
     Caminata(byte numeroVueltas)
     {
-        fechaCaminata= Cronometro.getFecha();
-        
+        //fechaCaminata= Cronometro.getFecha();
+        fechaCaminata = new Date(System.currentTimeMillis());
         this.numeroVueltas=numeroVueltas;
         vueltas= new Vuelta[this.numeroVueltas];        
         
@@ -38,10 +38,15 @@ public class Caminata
         this.setNuevaVuelta();
     }
     
-    public String getFechaCaminata()
+    public Date getFechaCaminata()
     {
         return fechaCaminata;
     }
+    
+//    public String getFechaCaminata()
+//    {
+//        return fechaCaminata;
+//    }
     
     public void setPPM(short pulsoPromedio)
     {

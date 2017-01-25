@@ -25,7 +25,6 @@ public class PantallaResultados  extends Form implements CommandListener{
     private StringItem tiempoMeta;
     private StringItem puntosSesion;
     private StringItem fecha;
-    private Date today;
     private DateField datefield;
     
     PantallaResultados(MIDlet a)
@@ -36,15 +35,13 @@ public class PantallaResultados  extends Form implements CommandListener{
          tiempoTotal = new StringItem("Tiempo total: ", "00:00:00:00");
          tiempoMeta = new StringItem( "Tiempo Meta : ", "00:00:00:00");
          datefield = new DateField("", DateField.DATE_TIME);
-         today = new Date(System.currentTimeMillis());
+    //     today = new Date(System.currentTimeMillis());
  
          //totalVueltas = new StringItem("Vuelta:", "00");
          
          
                  
-         cmdSalir=new Command("Salir",Command.EXIT,0);
-         
-         datefield.setDate(today);
+         cmdSalir=new Command("Salir",Command.EXIT,0);                
          
          this.append(datefield);
          //this.append(fecha);
@@ -83,6 +80,8 @@ public class PantallaResultados  extends Form implements CommandListener{
     {
         String tiempo="";
         int dif,tfinal,tmeta;
+        
+        datefield.setDate(caminataDatos.getFechaCaminata());
         
         tfinal=caminataDatos.getTiempoCaminata();
         tmeta= getTiempoMeta();

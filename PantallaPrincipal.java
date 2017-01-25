@@ -126,7 +126,8 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
         //this.addCommand(cmdPausa);
          this.addCommand(cmdMarcar);
          this.addCommand(cmdDetener);
-         
+       
+         this.setItemStateListener(null);
 
      }
 
