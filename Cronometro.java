@@ -13,9 +13,11 @@ import java.util.Timer;
 class Cronometro { //extends TimerTask {
      private long contador=0;
      private long lapso=0;
+     private int tiempoAgregado;
      private Timer timerVelocidad;
      private TTask task;
      private StringItem  txt,txt2;
+     private int milis;
      
      public Cronometro(StringItem t){
                     txt=t;
@@ -37,9 +39,14 @@ class Cronometro { //extends TimerTask {
                      contador=0;
                      //lapso=0;
                      timerVelocidad=new Timer();
-                     task= new TTask(this);
+                     task= new TTask(this,10);
                      //timerVelocidad.schedule(task,0L,10L); 
-                     timerVelocidad.scheduleAtFixedRate(task, 0L, 100L);
+                     timerVelocidad.scheduleAtFixedRate(task, 0L, milis);
+     }
+     
+     public void setMilis(int m)
+     {
+         milis= m;
      }
      public void Pausar(){
                     timerVelocidad.cancel();
@@ -87,7 +94,16 @@ class Cronometro { //extends TimerTask {
      
      public void printContador()
      {
-         txt.setText(DameFormatoHora(contador));
+         String s1;
+         
+         if(tiempoAgregado<=0)
+             s1= DameFormatoHora(contador) + "     +" + DameFormatoHoraCorta(tiempoAgregado);
+         else
+             s1= DameFormatoHora(contador) + "     -" + DameFormatoHoraCorta(tiempoAgregado);
+         
+         
+         txt.setText(s1);
+         
      }
      
      public void printLapso()
@@ -102,6 +118,10 @@ class Cronometro { //extends TimerTask {
          txt2.setText(s1);
      }
 
+     public void setTiempoAgregado(int t)
+     {
+         tiempoAgregado= t;
+     }
 
     public static String DameFormatoHora(long m){
          String Hora;

@@ -39,6 +39,13 @@ public class Vuelta {
         return distancia;
     }
     
+    public int getDistanciaxPista(int p)
+    {
+        if(p>=0 && p<this.p)
+            return distanciaxPista[p];
+        else
+            return -1;
+    }
     
     public int getTiempoRecorrido()
     {

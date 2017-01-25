@@ -16,11 +16,13 @@ import java.util.TimerTask;
 final class TTask  extends TimerTask
 {
       private final Cronometro a;
-      private final int cen=13;
+      private int cen;
             
-      TTask(Cronometro paramCronometro)
+      TTask(Cronometro paramCronometro,int milis)
       {
+         cen= milis;
         this.a = paramCronometro;
+       
       }
 
 

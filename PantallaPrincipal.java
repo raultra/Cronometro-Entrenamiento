@@ -1,12 +1,16 @@
 
 package cronometro;
 
+import java.util.Date;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-
+import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Gauge;
+import javax.microedition.lcdui.TextField;
+import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
 
@@ -23,7 +27,7 @@ import javax.microedition.midlet.MIDlet;
  *
  * @author raul
  */
-public class PantallaPrincipal extends Form implements CommandListener {
+public class PantallaPrincipal extends Form implements CommandListener,ItemStateListener {
   
      private MIDlet app;
      private Command cmdIniciar;
@@ -39,6 +43,8 @@ public class PantallaPrincipal extends Form implements CommandListener {
      private StringItem totalVueltas;                  // Total Vueltas
      private StringItem pista[];                       // Tiempo de cada pista (4)
      private StringItem fecha;
+     //private Gauge tiempo;
+     private TextField tiempo;
      
      private Cronometro cronometro;
      private Caminata caminata;
@@ -50,6 +56,7 @@ public class PantallaPrincipal extends Form implements CommandListener {
      private int tiempoActual=0;
      private int tiempoAnterior=0;
      private int tiempoAgregado=0;
+     private int milisTemp=100;
 
      PantallaPrincipal(MIDlet a){
          super("Cronómetro");
@@ -63,9 +70,13 @@ public class PantallaPrincipal extends Form implements CommandListener {
          
          //fecha= new StringItem("",Cronometro.getFecha());
          tiempoContado = new StringItem("Tiempo:  ", "00:00:00:00");
-         tiempoVueltaAnterior = new StringItem("Lap:  ", "00:00:00:00");
-         
+         tiempoVueltaAnterior = new StringItem("Lap:  ", "00:00:00:00");         
          totalVueltas = new StringItem("Vuelta:", "00");
+         
+        // tiempo=new Gauge("milis",true,200,100);
+        
+        tiempo=new TextField("Tiempo Meta",null,5,TextField.DECIMAL);
+         
          pista= new StringItem[4];
          
          pista[0]= new StringItem("Tiempo Meta 1: ", "00:00:00:00");
@@ -80,6 +91,8 @@ public class PantallaPrincipal extends Form implements CommandListener {
          this.append(tiempoContado);
          this.append(totalVueltas);
          this.append(tiempoVueltaAnterior);
+         this.append(tiempo);
+         
          this.append(pista[0]);
          this.append(pista[1]);
          this.append(pista[2]);
@@ -88,20 +101,25 @@ public class PantallaPrincipal extends Form implements CommandListener {
          caminata= new Caminata((byte)13);
          cronometro=new Cronometro(tiempoContado,tiempoVueltaAnterior);
          vueltaGoal= new Vuelta();
-         vueltaGoal.setTiemposPistas(5579, 2853, 5579, 2662);   
+        // vueltaGoal.setTiemposPistas(5579, 2853, 5579, 2662); 
+          vueltaGoal.setTiemposPistas(5250, 2685, 5250, 2506);
          //vueltaGoal.setTiemposPistas(1000, 1500, 1000, 1200);
          
          MostrarObjetivos();
          this.setCommandListener(this);
+         this.setItemStateListener(this);
      }
 
      public void iniciarCron()
      {   
          Display.getDisplay(app).vibrate(100);
          resetPistas();  
+         //this.delete();
          totalVueltas.setText(""+ caminata.getVueltaActual());
          escribirPista(vueltaGoal.getTiempoxPista(contadorPistas));
          cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas));
+         cronometro.setMilis(milisTemp);
+         
          cronometro.Iniciar();
          this.removeCommand(cmdIniciar);
          this.removeCommand(cmdSalir);
@@ -175,7 +193,9 @@ public class PantallaPrincipal extends Form implements CommandListener {
         caminata.guardarTiempoxPista(temp);
         totalVueltas.setText(Integer.toString(caminata.getVueltaActual()));
         
-        cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas));                 
+        cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas)); 
+        cronometro.setTiempoAgregado(tiempoAgregado);
+        
         escribirPista(vueltaGoal.getTiempoxPista(contadorPistas));
              
                  
@@ -274,4 +294,71 @@ public class PantallaPrincipal extends Form implements CommandListener {
              terminarCron();
          }
     }  
+    
+    
+    public void itemStateChanged(Item i){
+        String s,min,seg,cen;
+        int t=0,ini,fin;
+        float t1,t2,t3,t4;
+        float vel;
+        final int c=100;
+        
+        if (i == tiempo){
+            s=tiempo.getString();
+            
+            if(s.length()==tiempo.getMaxSize())
+            {
+                ini=s.indexOf('.');
+                min=s.substring(0, ini);
+                seg=s.substring(ini+1);
+//                ini=seg.indexOf('.');
+//                seg=seg.substring(0,ini);
+                ini=Integer.parseInt(min);
+                fin=Integer.parseInt(seg);
+                
+                fin=fin+ini*60;
+                
+                t=fin*100;
+                
+                //tiempoContado.setText(Cronometro.DameFormatoHora(t));
+                //tiempoContado.setText(min+":"+seg);
+                vel= calcularVelocidad(t);
+                
+                t1= c*vueltaGoal.getDistanciaxPista(0)/vel;
+                t2= c*vueltaGoal.getDistanciaxPista(1)/vel;
+                t3= c*vueltaGoal.getDistanciaxPista(2)/vel;
+                t4= c*vueltaGoal.getDistanciaxPista(3)/vel;
+                
+                vueltaGoal.setTiemposPistas(t1, t2, t3, t4);
+                MostrarObjetivos();
+            }
+//            tiempo.setLabel("Milis");
+//            milisTemp=tiempo.getValue();
+//            tiempo.setLabel("" + milisTemp);
+            
+           
+        }
+        
+    
+    }
+    
+    private float calcularVelocidad(int t)
+    {
+        int l,k;
+        float vel,tiempo,dis;
+        
+        l=vueltaGoal.getDistancia();
+        k=caminata.getNumeroDeVueltasTotal();
+        dis=l*k;
+        dis=dis/1609;
+        tiempo=(float)(t/100)/60;
+        vel=(60*dis)/tiempo;    // mph
+
+        vel=(vel*1609)/3600;    // a m/s
+
+
+        return vel;
+
+
+    }
 }
