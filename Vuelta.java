@@ -72,16 +72,16 @@ public class Vuelta {
         tiempoxPista[pista]=tiempo;
     }
     
-    public boolean setTiempoxPista(int tiempo)
+    public int setTiempoxPista(int tiempo)
     {
         if(pistasContador<p)
         {
-            setTiempoxPista(pistasContador++, tiempo);
-            return true;
+            setTiempoxPista(pistasContador, tiempo);
+            return ++pistasContador;
             
         }
         
-        return false;
+        return -1;
     }
     
     public int getTiempoxPista(int pista)

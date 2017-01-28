@@ -15,14 +15,6 @@ import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
 
 
-
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author raul
@@ -43,7 +35,7 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
      private StringItem totalVueltas;                  // Total Vueltas
      private StringItem pista[];                       // Tiempo de cada pista (4)
      private StringItem fecha;
-     //private Gauge tiempo;
+     private Gauge tiempoBarra;
      private TextField tiempo;
      
      private Cronometro cronometro;
@@ -73,7 +65,8 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
          tiempoVueltaAnterior = new StringItem("Lap:  ", "00:00:00:00");         
          totalVueltas = new StringItem("Vuelta:", "00");
          
-        // tiempo=new Gauge("milis",true,200,100);
+         tiempoBarra=new Gauge("",false,10,0);
+        
         
         tiempo=new TextField("Tiempo Meta",null,5,TextField.DECIMAL);
          
@@ -118,9 +111,12 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
          totalVueltas.setText(""+ caminata.getVueltaActual());
          escribirPista(vueltaGoal.getTiempoxPista(contadorPistas));
          cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas));
-         cronometro.setMilis(milisTemp);
-         
+         cronometro.setMilis(milisTemp);        
          cronometro.Iniciar();
+         tiempoBarra.setMaxValue(caminata.getNumeroDeVueltasTotal());
+         tiempoBarra.setLayout(Item.LAYOUT_CENTER);
+         
+         super.set(borrarItem(tiempo),tiempoBarra);
          this.removeCommand(cmdIniciar);
          this.removeCommand(cmdSalir);
         //this.addCommand(cmdPausa);
@@ -193,6 +189,7 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
         
         caminata.guardarTiempoxPista(temp);
         totalVueltas.setText(Integer.toString(caminata.getVueltaActual()));
+        tiempoBarra.setValue(caminata.getVueltaActual());
         
         cronometro.setLapso(vueltaGoal.getTiempoxPista(contadorPistas)); 
         cronometro.setTiempoAgregado(tiempoAgregado);
@@ -361,5 +358,22 @@ public class PantallaPrincipal extends Form implements CommandListener,ItemState
         return vel;
 
 
+    }
+    
+    private int borrarItem(Item m)
+    {
+        Item it;
+        
+        for(int i=0;i<super.size();i++)
+        {
+            it=super.get(i);
+            if(it==m){
+               //super.delete(i);
+               return i;
+            }
+                
+        }
+       
+        return -1;
     }
 }

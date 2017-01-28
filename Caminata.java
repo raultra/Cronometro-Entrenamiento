@@ -18,11 +18,12 @@ public class Caminata
     private byte numeroVueltas;          // Total vueltas dadas
     
     private int tiempoCaminata;
+    private boolean tiempoCumplido=false;
     private short ppm;                    // pulso promedio
     //private String fechaCaminata;           // usada para identificar la caminata en la semana
     
     private byte vueltasContador;
-    private byte vueltaActual;
+   // private byte vueltaActual;
     private Date fechaCaminata;
     
     Caminata(byte numeroVueltas)
@@ -33,7 +34,7 @@ public class Caminata
         vueltas= new Vuelta[this.numeroVueltas];        
         
         vueltasContador=0;
-        vueltaActual=0;
+        //vueltaActual=0;
         
         this.setNuevaVuelta();
     }
@@ -62,7 +63,7 @@ public class Caminata
     {
         short d;
         
-        d= (short)(this.numeroVueltas*vueltas[vueltaActual].getDistancia());
+        d= (short)(this.numeroVueltas*vueltas[vueltasContador].getDistancia());
         
         return d;
     }
@@ -87,7 +88,8 @@ public class Caminata
     
     public byte getVueltaActual()
     {
-        return (byte)(vueltaActual);
+        //return (byte)(vueltaActual);
+         return (byte)(vueltasContador);
     }
     
     public byte setNuevaVuelta()
@@ -95,9 +97,11 @@ public class Caminata
         if(vueltasContador<this.numeroVueltas)
         {
             vueltas[vueltasContador]=new Vuelta();
-            vueltaActual=vueltasContador;
-            return vueltasContador++;
+            //vueltaActual=vueltasContador;
+            return vueltasContador;
         }
+        //else if(vueltasContador>=this.numeroVueltas)
+            
            
         return -1;
     }
@@ -112,13 +116,17 @@ public class Caminata
     
     public void guardarTiempoxPista(int tiempo)
     {
-        boolean t;
+        int t=0;
         
-        t=vueltas[vueltaActual].setTiempoxPista(tiempo);
-        if(!t)
+        if(!tiempoCumplido)
+            t=vueltas[vueltasContador].setTiempoxPista(tiempo);
+        
+        if(t==4)
         {
-            this.setNuevaVuelta();
-            vueltas[vueltaActual].setTiempoxPista(tiempo);
+            vueltasContador++;
+            if(this.setNuevaVuelta()<0)
+                tiempoCumplido=true;
+            //vueltas[vueltaActual].setTiempoxPista(tiempo);
         }
     }
       
