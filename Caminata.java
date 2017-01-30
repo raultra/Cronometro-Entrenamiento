@@ -129,5 +129,20 @@ public class Caminata
             //vueltas[vueltaActual].setTiempoxPista(tiempo);
         }
     }
+    
+    public static float calcularVelocidad(int t,int d) {
+        
+        float vel, tiempo, dis;
+
+        dis = d;
+        dis = dis / 1609;
+        tiempo = (float) (t / 100) / 60;
+        vel = (60 * dis) / tiempo;    // mph
+
+        vel = (vel * 1609) / 3600;    // a m/s
+
+        return vel;
+
+    }
       
 }

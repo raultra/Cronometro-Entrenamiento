@@ -58,6 +58,11 @@ public class Vuelta {
         
     }
     
+    public void setTiempoRecorrido(int t)
+    {
+        tiempoRecorrido=t;
+    }
+    
     public void setDistanciaxPista(int p1,int p2,int p3,int p4)
     {
         distanciaxPista[0]=(byte)p1;

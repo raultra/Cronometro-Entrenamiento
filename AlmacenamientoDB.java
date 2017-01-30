@@ -18,7 +18,7 @@ public class AlmacenamientoDB {
     
     AlmacenamientoDB(String nDB)
     {
-        
+        nombreDB= nDB;
         abrirRecordStore();
     }
     

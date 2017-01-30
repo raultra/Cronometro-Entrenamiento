@@ -6,13 +6,12 @@ import javax.microedition.lcdui.*;
 
 
 public class MIDletCronometro extends MIDlet {
-     private Displayable formulario;
-     private Display pantalla;
-
+     private PantallaPrincipal formulario;
+     
 
 
      public MIDletCronometro(){
-                     pantalla=Display.getDisplay(this);
+                     
                      formulario= new PantallaPrincipal(this);
 
      }
@@ -20,7 +19,7 @@ public class MIDletCronometro extends MIDlet {
      
 
      public void startApp(){
-                    pantalla.setCurrent(formulario);
+                    Display.getDisplay(this).setCurrent(formulario);
      }
      public void pauseApp(){
      }
