@@ -19,7 +19,7 @@ public class Caminata
     
     private int tiempoCaminata;
     private boolean tiempoCumplido=false;
-    private short ppm;                    // pulso promedio
+    private int ppm;                    // pulso promedio
     //private String fechaCaminata;           // usada para identificar la caminata en la semana
     
     private byte vueltasContador;
@@ -49,12 +49,12 @@ public class Caminata
 //        return fechaCaminata;
 //    }
     
-    public void setPPM(short pulsoPromedio)
+    public void setPPM(int pulsoPromedio)
     {
         ppm=pulsoPromedio;
     }
     
-    public short getPPM()
+    public int getPPM()
     {
         return ppm;
     }
@@ -96,7 +96,7 @@ public class Caminata
     {
         if(vueltasContador<this.numeroVueltas)
         {
-            vueltas[vueltasContador]=new Vuelta();
+            vueltas[vueltasContador]=new Vuelta(1);
             //vueltaActual=vueltasContador;
             return vueltasContador;
         }

@@ -1,6 +1,7 @@
 package cronometro;
 
 import java.util.Date;
+import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -40,7 +41,10 @@ public class PantallaPrincipal extends Form implements CommandListener, ItemStat
     private Cronometro cronometro;
     private Caminata caminata;
     private Vuelta vueltaGoal;
+    private Entrenamiento bitacora;
+    private AlmacenamientoDB records;
 
+    
     //private PantallaResultados estadisticas;
     private int contadorPistas = 0;
     private int tiempoActual = 0;
@@ -94,14 +98,35 @@ public class PantallaPrincipal extends Form implements CommandListener, ItemStat
         this.append(pista[1]);
         this.append(pista[2]);
         this.append(pista[3]);
-
-        caminata = new Caminata((byte) 13);
-        cronometro = new Cronometro(tiempoContado, tiempoVueltaAnterior);
-        vueltaGoal = new Vuelta();
-        // vueltaGoal.setTiemposPistas(5579, 2853, 5579, 2662); 
-        vueltaGoal.setTiemposPistas(5250, 2685, 5250, 2506);
-        //vueltaGoal.setTiemposPistas(1000, 1500, 1000, 1200);
         
+      
+        cronometro = new Cronometro(tiempoContado, tiempoVueltaAnterior);
+        
+//        bitacora= new Entrenamiento();
+        
+//        records= new AlmacenamientoDB();
+//        
+//        
+//        
+//        if (records.getRecordStore()!=null)
+//        {
+//            records.escribirDatos("20 Marzo", 3800, 136);
+//            records.escribirDatos("21 Marzo", 3700, 146);
+//            records.escribirDatos("22 Marzo", 3600, 146);
+//            records.cerrarRecordStore();
+//        }
+//            
+          
+
+//        caminata = new Caminata((byte) 13);
+//        
+//        vueltaGoal = new Vuelta();
+//        vueltaGoal.setTiemposPistas(5250, 2685, 5250, 2506);
+        caminata = new Caminata((byte) 8);
+        
+        vueltaGoal = new Vuelta(1);
+        //vueltaGoal.setTiemposPistas(20000, 20000);       
+        vueltaGoal.setTiempoxPista(0,2000);
         
         MostrarObjetivos();
         this.setCommandListener(this);
@@ -168,6 +193,8 @@ public class PantallaPrincipal extends Form implements CommandListener, ItemStat
 //        conf.setPantallaAnterior(this);
         conf.setVueltaReferencia(vueltaGoal);
         conf.setCaminataDatos(caminata);
+        conf.setAlmacenamiento(records);  
+        
         conf.setPantallaPrincipal(this);
         
 //        Display.getDisplay(app).setCurrent(conf);
@@ -258,9 +285,9 @@ public class PantallaPrincipal extends Form implements CommandListener, ItemStat
         tiempoBarra.setMaxValue(caminata.getNumeroDeVueltasTotal());
         
         pista[0].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(0)));
-        pista[1].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(1)));
-        pista[2].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(2)));
-        pista[3].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(3)));
+//        pista[1].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(1)));
+//        pista[2].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(2)));
+//        pista[3].setText(Cronometro.DameFormatoHora(vueltaGoal.getTiempoxPista(3)));
     }
 
     private void resetPistas() {
